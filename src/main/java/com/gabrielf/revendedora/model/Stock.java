@@ -8,8 +8,6 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "stocks")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -29,5 +27,35 @@ public class Stock {
     @Column(nullable = false)
     private LocalDate updateAt;
 
+    public UUID getId() {
+        return id;
+    }
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public LocalDate getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(LocalDate updateAt) {
+        this.updateAt = updateAt;
+    }
 }
