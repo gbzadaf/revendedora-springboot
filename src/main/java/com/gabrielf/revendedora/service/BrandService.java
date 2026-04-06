@@ -1,12 +1,14 @@
 package com.gabrielf.revendedora.service;
 
+import com.gabrielf.revendedora.dto.BrandDto;
 import com.gabrielf.revendedora.model.Brand;
 import com.gabrielf.revendedora.repositories.BrandRepository;
-import lombok.RequiredArgsConstructor;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class BrandService {
@@ -17,32 +19,47 @@ public class BrandService {
         this.brandRepository = brandRepository;
     }
 
-    public List<Brand> findAll() {
-        return brandRepository.findAll();
+
+    public List<BrandDto> findAll() {
+        return brandRepository.findAll().stream()
+                .map(brand -> new BrandDto(brand.getId(), brand.getName()))
+                .collect(Collectors.toList());
 
     }
 
-    public Brand findById(UUID id) {
-        return brandRepository.findById(id).orElseThrow(() -> new RuntimeException("Marca não encontrada"));
+    public BrandDto findById(UUID id) {
+        Brand brand = brandRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Marca não encontrada"));
+        return new BrandDto(brand.getId(), brand.getName());
 
     }
 
-    public Brand save(Brand brand) {
-        return brandRepository.save(brand);
+    @Transactional
+    public BrandDto save(BrandDto dto) {
+        Brand brand = new Brand();
+        brand.setName(dto.getName());
+        Brand saved = brandRepository.save(brand);
+        return new BrandDto(saved.getId(), saved.getName());
 
     }
 
-    public Brand update(UUID id, Brand brand) {
-        Brand existing = findById(id);
-        existing.setName(brand.getName());
-        return brandRepository.save(existing);
+    @Transactional
+    public BrandDto update(UUID id, BrandDto dto) {
+        Brand brand = brandRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Marca não encontrada"));
+        brand.setName(dto.getName());
+        Brand updated = brandRepository.save(brand);
+        return new BrandDto(updated.getId(), updated.getName());
+
 
     }
 
     public void delete(UUID id) {
-        brandRepository.delete(findById(id));
+        Brand brand = brandRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Marca não encontrada"));
+        brandRepository.delete(brand);
 
     }
 
-    
+
 }
