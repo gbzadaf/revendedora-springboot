@@ -35,7 +35,7 @@ public class CustomerService {
     }
 
     @Transactional
-    public CustomerDto save(UUID id, CustomerDto dto) {
+    public CustomerDto save(CustomerDto dto) {
 
         Customer customer = new Customer();
         customer.setName(dto.getName());
