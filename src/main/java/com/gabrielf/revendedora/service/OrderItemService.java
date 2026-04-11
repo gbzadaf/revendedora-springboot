@@ -10,6 +10,7 @@ import com.gabrielf.revendedora.repositories.OrderRepository;
 import com.gabrielf.revendedora.repositories.ProductRepository;
 import com.gabrielf.revendedora.repositories.StockRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Service
 public class OrderItemService {
 
     private final OrderItemRepository orderItemRepository;

@@ -7,6 +7,7 @@ import com.gabrielf.revendedora.model.OrderStatus;
 import com.gabrielf.revendedora.repositories.CustomerRepository;
 import com.gabrielf.revendedora.repositories.OrderRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Service
 public class OrderService {
 
     private final OrderRepository orderRepository;

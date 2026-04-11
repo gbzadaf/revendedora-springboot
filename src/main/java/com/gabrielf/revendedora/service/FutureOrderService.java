@@ -7,11 +7,13 @@ import com.gabrielf.revendedora.model.Product;
 import com.gabrielf.revendedora.repositories.CustomerRepository;
 import com.gabrielf.revendedora.repositories.FutureOrderRepository;
 import com.gabrielf.revendedora.repositories.ProductRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Service
 public class FutureOrderService {
 
     private final FutureOrderRepository futureOrderRepository;
