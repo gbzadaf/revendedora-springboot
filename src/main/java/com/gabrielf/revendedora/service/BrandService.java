@@ -1,6 +1,7 @@
 package com.gabrielf.revendedora.service;
 
 import com.gabrielf.revendedora.dto.BrandDto;
+import com.gabrielf.revendedora.exception.ResourceNotFoundException;
 import com.gabrielf.revendedora.model.Brand;
 import com.gabrielf.revendedora.repositories.BrandRepository;
 import jakarta.transaction.Transactional;
@@ -29,7 +30,7 @@ public class BrandService {
 
     public BrandDto findById(UUID id) {
         Brand brand = brandRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Marca não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Marca não encontrada"));
         return new BrandDto(brand.getId(), brand.getName());
 
     }
@@ -46,7 +47,7 @@ public class BrandService {
     @Transactional
     public BrandDto update(UUID id, BrandDto dto) {
         Brand brand = brandRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Marca não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Marca não encontrada"));
         brand.setName(dto.getName());
         Brand updated = brandRepository.save(brand);
         return new BrandDto(updated.getId(), updated.getName());
@@ -56,7 +57,7 @@ public class BrandService {
 
     public void delete(UUID id) {
         Brand brand = brandRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Marca não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Marca não encontrada"));
         brandRepository.delete(brand);
 
     }

@@ -1,6 +1,7 @@
 package com.gabrielf.revendedora.service;
 
 import com.gabrielf.revendedora.dto.ProductDto;
+import com.gabrielf.revendedora.exception.ResourceNotFoundException;
 import com.gabrielf.revendedora.model.Brand;
 import com.gabrielf.revendedora.model.Product;
 import com.gabrielf.revendedora.repositories.BrandRepository;
@@ -35,7 +36,7 @@ public class ProductService {
     public ProductDto findById(UUID id) {
 
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
         return toDTO(product);
 
     }
@@ -44,7 +45,7 @@ public class ProductService {
     public ProductDto save(ProductDto dto) {
 
         Brand brand = brandRepository.findById(dto.getBrandId())
-                .orElseThrow(() -> new RuntimeException("Marca não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Marca não encontrada"));
         Product product = new Product();
         product.setName(dto.getName());
         product.setCostPrice(dto.getCostPrice());
@@ -59,9 +60,9 @@ public class ProductService {
     public ProductDto update(UUID id, ProductDto dto) {
 
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
         Brand brand = brandRepository.findById(dto.getBrandId())
-                .orElseThrow(() -> new RuntimeException("Marca não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Marca não encontrada"));
         product.setName(dto.getName());
         product.setCostPrice(dto.getCostPrice());
         product.setSalePrice(dto.getSalePrice());
@@ -74,7 +75,7 @@ public class ProductService {
     public void delete(UUID id) {
 
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
         productRepository.delete(product);
     }
 

@@ -1,6 +1,7 @@
 package com.gabrielf.revendedora.service;
 
 import com.gabrielf.revendedora.dto.CustomerDto;
+import com.gabrielf.revendedora.exception.ResourceNotFoundException;
 import com.gabrielf.revendedora.model.Customer;
 import com.gabrielf.revendedora.repositories.CustomerRepository;
 import jakarta.transaction.Transactional;
@@ -29,7 +30,7 @@ public class CustomerService {
 
     public CustomerDto findById(UUID id) {
         Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
         return toDTO(customer);
 
     }
@@ -49,7 +50,7 @@ public class CustomerService {
     public CustomerDto update(UUID id, CustomerDto dto) {
 
         Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
         customer.setName(dto.getName());
         customer.setPhone(dto.getPhone());
         Customer updated = customerRepository.save(customer);
@@ -60,7 +61,7 @@ public class CustomerService {
     public void delete(UUID id) {
 
         Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
         customerRepository.delete(customer);
     }
 

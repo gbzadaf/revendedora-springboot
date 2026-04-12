@@ -1,6 +1,7 @@
 package com.gabrielf.revendedora.service;
 
 import com.gabrielf.revendedora.dto.OrderDto;
+import com.gabrielf.revendedora.exception.ResourceNotFoundException;
 import com.gabrielf.revendedora.model.Customer;
 import com.gabrielf.revendedora.model.Order;
 import com.gabrielf.revendedora.model.OrderStatus;
@@ -35,14 +36,14 @@ public class OrderService {
 
     public OrderDto findById(UUID id) {
         Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
         return toDTO(order);
     }
 
     @Transactional
     public OrderDto save(OrderDto dto) {
         Customer customer = customerRepository.findById(dto.getCustomerId())
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
         Order order = new Order();
         order.setCustomer(customer);
@@ -67,7 +68,7 @@ public class OrderService {
     public OrderDto update(UUID id, OrderDto dto) {
 
         Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
         order.setTotalAmount(dto.getTotalAmount());
         order.setAmountPaid(dto.getAmountPaid());
         order.setOrderStatus(calculateStatus(order.getTotalAmount(), order.getAmountPaid()));
@@ -80,7 +81,7 @@ public class OrderService {
     @Transactional
     public void delete(UUID id) {
         Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
         orderRepository.delete(order);
     }
 

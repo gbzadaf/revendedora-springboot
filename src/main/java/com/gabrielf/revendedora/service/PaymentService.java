@@ -1,6 +1,7 @@
 package com.gabrielf.revendedora.service;
 
 import com.gabrielf.revendedora.dto.PaymentDto;
+import com.gabrielf.revendedora.exception.ResourceNotFoundException;
 import com.gabrielf.revendedora.model.Order;
 import com.gabrielf.revendedora.model.OrderStatus;
 import com.gabrielf.revendedora.model.Payment;
@@ -35,14 +36,14 @@ public class PaymentService {
 
     public PaymentDto findById(UUID id) {
         Payment payment = paymentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pagamento não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Pagamento não encontrado"));
         return toDTO(payment);
     }
 
     @Transactional
     public PaymentDto save(PaymentDto dto) {
         Order order = orderRepository.findById(dto.getOrderId())
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
 
         Payment payment = new Payment();
         payment.setOrder(order);
@@ -70,12 +71,12 @@ public class PaymentService {
     @Transactional
     public void delete(UUID id) {
         Payment payment = paymentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pagamento não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Pagamento não encontrado"));
         orderRepository.findById(payment.getOrder().getId()).ifPresent(order -> {
             BigDecimal newAmountPaid = order.getAmountPaid().subtract(payment.getAmount());
             order.setAmountPaid(newAmountPaid);
 
-            if (newAmountPaid.compareTo(BigDecimal.ZERO) == 0) {                     //quando um pagamento é removido, subtraí o valor do amountPaid e recalculam o status — o pedido volta para o estado correto.
+            if (newAmountPaid.compareTo(BigDecimal.ZERO) == 0) {                     //quando um pagamento é removido, subtraí o valor do amountPaid e recalcula o status — o pedido volta para o estado correto.
                order.setOrderStatus(OrderStatus.PENDING);
             } else if (newAmountPaid.compareTo(order.getTotalAmount()) >= 0) {
                 order.setOrderStatus(OrderStatus.PAID);

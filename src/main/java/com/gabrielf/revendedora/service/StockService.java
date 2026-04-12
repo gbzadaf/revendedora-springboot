@@ -1,6 +1,7 @@
 package com.gabrielf.revendedora.service;
 
 import com.gabrielf.revendedora.dto.StockDto;
+import com.gabrielf.revendedora.exception.ResourceNotFoundException;
 import com.gabrielf.revendedora.model.Product;
 import com.gabrielf.revendedora.model.Stock;
 import com.gabrielf.revendedora.repositories.ProductRepository;
@@ -35,7 +36,7 @@ public class StockService {
     public StockDto findById(UUID id) {
 
         Stock stock = stockRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Estoque não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Estoque não encontrado"));
         return toDTO(stock);
     }
 
@@ -43,7 +44,7 @@ public class StockService {
     public StockDto save(StockDto dto) {
 
         Product product = productRepository.findById(dto.getProductId())
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
         Stock stock = new Stock();
         stock.setProduct(product);
         stock.setQuantity(dto.getQuantity());
@@ -56,7 +57,7 @@ public class StockService {
     public StockDto update(UUID id, StockDto dto) {
 
         Stock stock = stockRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Estoque não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Estoque não encontrado"));
         stock.setQuantity(dto.getQuantity());
         stock.setUpdateAt(LocalDate.now());
         Stock updated = stockRepository.save(stock);
@@ -67,7 +68,7 @@ public class StockService {
     public void delete(UUID id) {
 
         Stock stock = stockRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Estoque não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Estoque não encontrado"));
         stockRepository.delete(stock);
     }
 

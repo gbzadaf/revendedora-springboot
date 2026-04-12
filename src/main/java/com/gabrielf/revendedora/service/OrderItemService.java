@@ -2,6 +2,8 @@ package com.gabrielf.revendedora.service;
 
 
 import com.gabrielf.revendedora.dto.OrderItemDto;
+import com.gabrielf.revendedora.exception.BusinessException;
+import com.gabrielf.revendedora.exception.ResourceNotFoundException;
 import com.gabrielf.revendedora.model.Order;
 import com.gabrielf.revendedora.model.OrderItem;
 import com.gabrielf.revendedora.model.Product;
@@ -46,7 +48,7 @@ public class OrderItemService {
     public OrderItemDto findById(UUID id) {
 
         OrderItem orderItem = orderItemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Item não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Item não encontrado"));
         return toDTO(orderItem);
 
     }
@@ -55,13 +57,13 @@ public class OrderItemService {
     public OrderItemDto save(OrderItemDto dto) {
 
         Order order = orderRepository.findById(dto.getOrderId())
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
         Product product = productRepository.findById(dto.getProductId())
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
 
         stockRepository.findByProduct(product).ifPresent(stock -> {
             if (stock.getQuantity() < dto.getQuantity()) {
-                throw new RuntimeException("Estoque insuficiente para o produto: " + product.getName());
+                throw new BusinessException("Estoque insuficiente para o produto: " + product.getName());
             }
             stock.setQuantity(stock.getQuantity() - dto.getQuantity());
             stock.setUpdateAt(LocalDate.now());
@@ -82,7 +84,7 @@ public class OrderItemService {
     @Transactional
     public void delete(UUID id) {
         OrderItem orderItem = orderItemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Item não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Item não encontrado"));
         orderItemRepository.delete(orderItem);
     }
 

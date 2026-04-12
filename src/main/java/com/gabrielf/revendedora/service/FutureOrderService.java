@@ -1,6 +1,7 @@
 package com.gabrielf.revendedora.service;
 
 import com.gabrielf.revendedora.dto.FutureOrderDto;
+import com.gabrielf.revendedora.exception.ResourceNotFoundException;
 import com.gabrielf.revendedora.model.Customer;
 import com.gabrielf.revendedora.model.FutureOrder;
 import com.gabrielf.revendedora.model.Product;
@@ -36,16 +37,16 @@ public class FutureOrderService {
 
     public FutureOrderDto findById(UUID id) {
         FutureOrder futureOrder = futureOrderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pedido futuro não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Pedido futuro não encontrado"));
         return toDTO(futureOrder);
     }
 
     public FutureOrderDto save(FutureOrderDto dto) {
         Customer customer = customerRepository.findById(dto.getCustomerId())
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
         Product product = productRepository.findById(dto.getProductId())
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
 
         FutureOrder futureOrder = new FutureOrder();
         futureOrder.setCustomer(customer);
@@ -59,7 +60,7 @@ public class FutureOrderService {
 
     public FutureOrderDto update(UUID id, FutureOrderDto dto) {
         FutureOrder futureOrder = futureOrderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pedido futuro não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Pedido futuro não encontrado"));
 
         futureOrder.setQuantity(dto.getQuantity());
         futureOrder.setNotes(dto.getNotes());
@@ -70,7 +71,7 @@ public class FutureOrderService {
 
     public void delete(UUID id) {
         FutureOrder futureOrder = futureOrderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pedido futuro não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Pedido futuro não encontrado"));
         futureOrderRepository.delete(futureOrder);
 
     }
