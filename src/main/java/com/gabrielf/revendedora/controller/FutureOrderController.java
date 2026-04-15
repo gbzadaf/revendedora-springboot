@@ -2,6 +2,7 @@ package com.gabrielf.revendedora.controller;
 
 import com.gabrielf.revendedora.dto.FutureOrderDto;
 import com.gabrielf.revendedora.service.FutureOrderService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,12 +31,12 @@ public class FutureOrderController {
     }
 
     @PostMapping
-    public ResponseEntity<FutureOrderDto> save(@RequestBody FutureOrderDto dto) {
+    public ResponseEntity<FutureOrderDto> save(@Valid @RequestBody FutureOrderDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(futureOrderService.save(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FutureOrderDto> update(@PathVariable UUID id, @RequestBody FutureOrderDto dto) {
+    public ResponseEntity<FutureOrderDto> update(@PathVariable UUID id, @Valid @RequestBody FutureOrderDto dto) {
         return ResponseEntity.ok(futureOrderService.update(id, dto));
     }
 

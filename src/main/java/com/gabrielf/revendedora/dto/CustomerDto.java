@@ -1,10 +1,14 @@
 package com.gabrielf.revendedora.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.UUID;
 
 public class CustomerDto {
 
     private UUID id;
+
+    @NotBlank(message = "Nome é obrigatório")
     private String name;
     private String phone;
 

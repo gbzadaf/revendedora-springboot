@@ -2,6 +2,7 @@ package com.gabrielf.revendedora.controller;
 
 import com.gabrielf.revendedora.dto.PaymentDto;
 import com.gabrielf.revendedora.service.PaymentService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class PaymentController {
     }
 
     @PostMapping
-    public ResponseEntity<PaymentDto> save(@RequestBody PaymentDto dto) {
+    public ResponseEntity<PaymentDto> save(@Valid @RequestBody PaymentDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.save(dto));
     }
 

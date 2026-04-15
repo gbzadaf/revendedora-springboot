@@ -2,6 +2,7 @@ package com.gabrielf.revendedora.controller;
 
 import com.gabrielf.revendedora.dto.BrandDto;
 import com.gabrielf.revendedora.service.BrandService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,14 +34,14 @@ public class BrandController {
     }
 
     @PostMapping
-    public ResponseEntity<BrandDto> save(@RequestBody BrandDto dto) {
+    public ResponseEntity<BrandDto> save(@Valid @RequestBody BrandDto dto) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(brandService.save(dto));
 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BrandDto> update(@PathVariable UUID id, @RequestBody BrandDto dto) {
+    public ResponseEntity<BrandDto> update(@PathVariable UUID id, @Valid @RequestBody BrandDto dto) {
 
         return ResponseEntity.ok(brandService.update(id, dto));
 

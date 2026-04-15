@@ -1,15 +1,30 @@
 package com.gabrielf.revendedora.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
 public class ProductDto {
 
     private UUID id;
+
+    @NotBlank(message = "Nome é obrigatório")
     private String name;
+
+    @NotNull(message = "Preço de custo é obrigatório")
+    @Positive(message = "Preço de custo deve ser maior que zero")
     private BigDecimal costPrice;
+
+    @NotNull(message = "Preço de venda é obrigatório")
+    @Positive(message = "Preço de venda deve ser maior que zero")
     private BigDecimal salePrice;
+
+    @NotNull(message = "Marca é obrigatória")
     private UUID brandId;
+
     private String brandName;
 
     public ProductDto() {

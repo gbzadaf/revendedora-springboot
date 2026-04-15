@@ -2,6 +2,7 @@ package com.gabrielf.revendedora.controller;
 
 import com.gabrielf.revendedora.dto.OrderItemDto;
 import com.gabrielf.revendedora.service.OrderItemService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class OrderItemController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderItemDto> save(@RequestBody OrderItemDto dto) {
+    public ResponseEntity<OrderItemDto> save(@Valid @RequestBody OrderItemDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(orderItemService.save(dto));
     }
 

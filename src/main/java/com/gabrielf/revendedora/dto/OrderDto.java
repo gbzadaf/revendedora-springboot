@@ -1,6 +1,8 @@
 package com.gabrielf.revendedora.dto;
 
 import com.gabrielf.revendedora.model.OrderStatus;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -9,12 +11,22 @@ import java.util.UUID;
 public class OrderDto {
 
     private UUID id;
+
+    @NotNull(message = "Cliente é obrigatório")
     private UUID customerId;
+
     private String customerName;
+
     private LocalDate orderDate;
+
+    @NotNull(message = "Valor total é obrigatório")
+    @Positive(message = "Valor total deve ser maior que zero")
     private BigDecimal totalAmount;
+
     private BigDecimal amountPaid;
+
     private BigDecimal amountRemaining;
+
     private OrderStatus status;
 
     public OrderDto() {

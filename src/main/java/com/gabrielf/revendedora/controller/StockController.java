@@ -2,6 +2,7 @@ package com.gabrielf.revendedora.controller;
 
 import com.gabrielf.revendedora.dto.StockDto;
 import com.gabrielf.revendedora.service.StockService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,12 +31,12 @@ public class StockController {
     }
 
     @PostMapping
-    public ResponseEntity<StockDto> save(@RequestBody StockDto dto) {
+    public ResponseEntity<StockDto> save(@Valid @RequestBody StockDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(stockService.save(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StockDto> update(@PathVariable UUID id, @RequestBody StockDto dto) {
+    public ResponseEntity<StockDto> update(@PathVariable UUID id, @Valid @RequestBody StockDto dto) {
         return ResponseEntity.ok(stockService.update(id, dto));
     }
 

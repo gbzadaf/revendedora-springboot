@@ -2,6 +2,7 @@ package com.gabrielf.revendedora.controller;
 
 import com.gabrielf.revendedora.dto.CustomerDto;
 import com.gabrielf.revendedora.service.CustomerService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,12 +32,12 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<CustomerDto> save(@RequestBody CustomerDto dto) {
+    public ResponseEntity<CustomerDto> save(@Valid @RequestBody CustomerDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(customerService.save(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CustomerDto> update(@PathVariable UUID id, @RequestBody CustomerDto dto) {
+    public ResponseEntity<CustomerDto> update(@PathVariable UUID id, @Valid @RequestBody CustomerDto dto) {
         return ResponseEntity.ok(customerService.update(id, dto));
     }
 
