@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/revendedora}
+    username: ${DB_USERNAME:revendedora}
+    password: ${DB_PASSWORD:revendedora}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+logging:
+  level:
+    com.gabrielf.api: INFO
