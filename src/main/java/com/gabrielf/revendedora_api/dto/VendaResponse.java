@@ -1,5 +1,6 @@
 package com.gabrielf.revendedora_api.dto;
 
+import com.gabrielf.revendedora_api.domain.entity.Venda;
 import com.gabrielf.revendedora_api.domain.enums.StatusVenda;
 
 import java.math.BigDecimal;
@@ -20,4 +21,19 @@ public record VendaResponse(
         LocalDateTime criadoEm,
         LocalDateTime atualizadoEm
 ) {
+
+    public static VendaResponse fromEntity(Venda venda) {
+        return new VendaResponse(
+                venda.getId(),
+                venda.getCliente().getId(),
+                venda.getCliente().getNome(),
+                venda.getDataVenda(),
+                venda.getValorTotal(),
+                venda.getStatus(),
+                venda.getItens().stream().map(ItemVendaResponse::fromEntity).toList(),
+                venda.getParcelas().stream().map(ParcelaResponse::fromEntity).toList(),
+                venda.getCriadoEm(),
+                venda.getAtualizadoEm()
+        );
+    }
 }

@@ -1,5 +1,7 @@
 package com.gabrielf.revendedora_api.dto;
 
+import com.gabrielf.revendedora_api.domain.entity.Cliente;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -14,4 +16,16 @@ public record ClienteResponse(
         LocalDateTime atualizadoEm
 
 ) {
+
+    public static ClienteResponse fromEntity(Cliente cliente) {
+        return new ClienteResponse(
+                cliente.getId(),
+                cliente.getNome(),
+                cliente.getTelefone(),
+                cliente.getEndereco(),
+                cliente.getObservacoes(),
+                cliente.getCriadoEm(),
+                cliente.getAtualizadoEm()
+        );
+    }
 }
