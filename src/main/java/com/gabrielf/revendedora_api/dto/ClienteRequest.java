@@ -1,5 +1,6 @@
 package com.gabrielf.revendedora_api.dto;
 
+import com.gabrielf.revendedora_api.domain.entity.Cliente;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -23,4 +24,9 @@ public record ClienteRequest(
         String observacoes
 
 ) {
+
+        // funcao utilitaria de validacao/formatacao
+        public String telefoneNormalizado() {
+                return this.telefone().replaceAll("\\D", "");
+        }
 }

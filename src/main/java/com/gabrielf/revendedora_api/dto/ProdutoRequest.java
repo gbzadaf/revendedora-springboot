@@ -1,5 +1,6 @@
 package com.gabrielf.revendedora_api.dto;
 
+import com.gabrielf.revendedora_api.domain.entity.Produto;
 import com.gabrielf.revendedora_api.domain.enums.Marca;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -28,4 +29,5 @@ public record ProdutoRequest(
         Integer quantidadeMinima
 
 ) {
+
 }
