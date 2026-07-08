@@ -49,6 +49,14 @@ public class ProdutoService {
 
     }
 
+    @Transactional(readOnly = true)
+    public List<ProdutoResponse> listarComEstoqueBaixo() {
+        return produtoRepository.findComEstoqueBaixo().stream()
+                .map(ProdutoResponse::fromEntity)
+                .toList();
+    }
+
+
     public ProdutoResponse atualizar(UUID id, ProdutoRequest request) {
         Produto produto = buscarEntidadePorId(id);
 
