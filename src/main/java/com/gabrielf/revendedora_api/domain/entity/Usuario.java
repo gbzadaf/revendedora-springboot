@@ -19,7 +19,7 @@ public class Usuario {
     private UUID id;
 
     @Column(nullable = false, unique = true, length = 50)
-    private String nome;
+    private String login;
 
     @Column(nullable = false)
     private String senha;
