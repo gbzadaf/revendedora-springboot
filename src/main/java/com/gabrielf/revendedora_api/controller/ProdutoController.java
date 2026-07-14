@@ -6,6 +6,8 @@ import com.gabrielf.revendedora_api.dto.ReporEstoqueResponse;
 import com.gabrielf.revendedora_api.dto.ReservaResponse;
 import com.gabrielf.revendedora_api.service.ProdutoService;
 import com.gabrielf.revendedora_api.service.ReservaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -20,12 +22,14 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/produtos")
 @RequiredArgsConstructor
+@Tag(name = "Produtos", description = "Gestão de catálogo e estoque de produtos")
 public class ProdutoController {
 
     private final ProdutoService produtoService;
     private final ReservaService reservaService;
 
 
+    @Operation(summary = "Cadastrar novo produto")
     @PostMapping
     public ResponseEntity<ProdutoResponse> criar (@Valid @RequestBody ProdutoRequest request){
         ProdutoResponse response = produtoService.criar(request);
@@ -33,24 +37,28 @@ public class ProdutoController {
 
     }
 
+    @Operation(summary = "Listar todos os produtos cadastrados")
     @GetMapping
     public ResponseEntity<List<ProdutoResponse>> listarTodos() {
         return ResponseEntity.ok(produtoService.listarTodos());
 
     }
 
+    @Operation(summary = "Listar produtos com estoque igual ou abaixo do mínimo definido")
     @GetMapping("/estoque-baixo")
     public ResponseEntity<List<ProdutoResponse>> listarComEstoqueBaixo() {
         return ResponseEntity.ok(produtoService.listarComEstoqueBaixo());
 
     }
 
+    @Operation(summary = "Buscar produto por ID")
     @GetMapping("/{id}")
     public ResponseEntity<ProdutoResponse> buscarPorId (@PathVariable UUID id) {
         return ResponseEntity.ok(produtoService.buscarPorId(id));
 
     }
 
+    @Operation(summary = "Atualizar dados de um produto existente")
     @PutMapping("/{id}")
     public ResponseEntity<ProdutoResponse> atualizar (@PathVariable UUID id,
                                                       @Valid @RequestBody ProdutoRequest request) {
@@ -58,6 +66,7 @@ public class ProdutoController {
 
     }
 
+    @Operation(summary = "Remover um produto do catálogo")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar (@PathVariable UUID id) {
         produtoService.deletar(id);
@@ -65,6 +74,12 @@ public class ProdutoController {
 
     }
 
+    @Operation(
+            summary = "Repor estoque de um produto",
+            description = "Adiciona a quantidade informada ao estoque atual e libera automaticamente " +
+                    "as reservas AGUARDANDO desse produto, respeitando a ordem de chegada e " +
+                    "o limite de estoque reposto."
+    )
     @PatchMapping("/{id}/estoque")
     public ResponseEntity<ReporEstoqueResponse> reporEstoque(
             @PathVariable UUID id, @Valid @RequestBody ReporEstoqueRequest request) {
