@@ -9,4 +9,4 @@ spring:
 
 logging:
   level:
-    com.gabrielf.api: INFO
+    com.gabrielf.revendedora_api: INFO

@@ -13,5 +13,5 @@ spring:
 
 logging:
   level:
-    com.gabrielf.api: DEBUG
+    com.gabrielf.revendedora_api: DEBUG
     org.hibernate.SQL: DEBUG
