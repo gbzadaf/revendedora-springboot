@@ -233,4 +233,39 @@ public class ReservaServiceTest {
         assertThat(liberadas).isEmpty();
         assertThat(reserva.getStatus()).isEqualTo(StatusReserva.AGUARDANDO);
     }
+
+    @Test
+    void deveMarcarReservaDisponivelComoEntregue() {
+        Reserva reserva = Reserva.builder()
+                .id(UUID.randomUUID())
+                .cliente(cliente)
+                .produto(produtoSemEstoque)
+                .quantidade(1)
+                .status(StatusReserva.DISPONIVEL)
+                .build();
+
+        when(reservaRepository.findById(reserva.getId())).thenReturn(Optional.of(reserva));
+        when(reservaRepository.save(reserva)).thenReturn(reserva);
+
+        ReservaResponse response = reservaService.entregar(reserva.getId());
+
+        assertThat(response.status()).isEqualTo(StatusReserva.ENTREGUE);
+    }
+
+    @Test
+    void deveLancarExcecaoAoEntregarReservaQueNaoEstaDisponivel() {
+        Reserva reserva = Reserva.builder()
+                .id(UUID.randomUUID())
+                .cliente(cliente)
+                .produto(produtoSemEstoque)
+                .quantidade(1)
+                .status(StatusReserva.AGUARDANDO)
+                .build();
+
+        when(reservaRepository.findById(reserva.getId())).thenReturn(Optional.of(reserva));
+
+        assertThatThrownBy(() -> reservaService.entregar(reserva.getId()))
+                .isInstanceOf(RegraDeNegocioException.class)
+                .hasMessageContaining("DISPONIVEL");
+    }
 }

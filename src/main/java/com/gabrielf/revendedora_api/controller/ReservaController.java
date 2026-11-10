@@ -61,6 +61,16 @@ public class ReservaController {
         return ResponseEntity.ok(reservaService.cancelar(id));
     }
 
+    @Operation(
+            summary = "Marcar reserva como entregue",
+            description = "Só é permitido para reservas com status DISPONIVEL (produto já reposto no estoque). " +
+                    "Não altera o estoque: a baixa acontece quando a venda é registrada."
+    )
+    @PatchMapping("/{id}/entregar")
+    public ResponseEntity<ReservaResponse> entregar(@PathVariable UUID id) {
+        return ResponseEntity.ok(reservaService.entregar(id));
+    }
+
 }
 
 /* liberarReservasPorEstoque() sem endpoint próprio de propósito, porque ele só faz sentido sendo chamado em conjunto

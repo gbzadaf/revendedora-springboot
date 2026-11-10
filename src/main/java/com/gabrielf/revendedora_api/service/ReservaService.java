@@ -84,6 +84,20 @@ public class ReservaService {
 
     }
 
+    public ReservaResponse entregar(UUID id) {
+        Reserva reserva = buscarEntidadePorId(id);
+
+        if (reserva.getStatus() != StatusReserva.DISPONIVEL) {
+            throw new RegraDeNegocioException(
+                    "Só é possível entregar reservas com status DISPONIVEL. Status atual: "
+                            + reserva.getStatus());
+        }
+
+        reserva.setStatus(StatusReserva.ENTREGUE);
+        Reserva atualizada = reservaRepository.save(reserva);
+        return ReservaResponse.fromEntity(atualizada);
+    }
+
     /**
      * Chamado pelo Controller logo apos ProdutoService.reporEstoque().
      * Marca como DISPONIVEL todas as reservas AGUARDANDO desse produto,
