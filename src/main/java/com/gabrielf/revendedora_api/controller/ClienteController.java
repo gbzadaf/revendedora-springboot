@@ -39,7 +39,7 @@ public class ClienteController {
     @GetMapping
     public ResponseEntity<List<ClienteResponse>> listarTodos (@RequestParam(required = false) String nome) {
 
-        if (nome != null || !nome.isBlank()) {
+        if (nome != null &&  !nome.isBlank()) {
             return ResponseEntity.ok(clienteService.buscarPorNome(nome));
         }
 
