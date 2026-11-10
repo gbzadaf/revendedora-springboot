@@ -1,6 +1,8 @@
 package com.gabrielf.revendedora_api.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalHandlerException {
 
@@ -70,9 +73,24 @@ public class GlobalHandlerException {
 
     }
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErroResponse> handleIntegridade(
+            DataIntegrityViolationException ex, HttpServletRequest request) {
+        log.warn("Violação de integridade em {} {}", request.getMethod(), request.getRequestURI(), ex);
+        ErroResponse erro = new ErroResponse(
+                HttpStatus.CONFLICT.value(),
+                "Operação não permitida",
+                "Não foi possível concluir: o registro possui vendas ou reservas vinculadas.",
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(erro);
+
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErroResponse> handleGenerico(
             Exception ex, HttpServletRequest request) {
+        log.error("Erro não tratado em {} {}", request.getMethod(), request.getRequestURI(), ex);
         ErroResponse erro = new ErroResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "Erro interno",
