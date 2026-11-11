@@ -145,3 +145,78 @@ h3, h4 { margin: 1rem 0 .5rem; }
 .venda-topo .total { margin-left: auto; }
 
 .selo-cinza { background: #6b7280; }
+
+/* ===== Celular ===== */
+@media (max-width: 700px) {
+  main { padding: 1rem .75rem; }
+
+  /* cabeçalho: título e "Sair" em cima, abas embaixo */
+  header { flex-wrap: wrap; gap: .5rem 1rem; padding: .6rem .75rem; }
+  #btn-sair { order: 2; margin-left: auto; }
+  nav { order: 3; flex: 1 1 100%; }
+  nav button { flex: 1; padding: .55rem .4rem; font-size: .9rem; }
+
+  /* formulários: um campo por linha */
+  .form-linha label,
+  .form-linha button,
+  .form-linha strong { flex: 1 1 100%; }
+  .form-linha input,
+  .form-linha select { width: 100%; }
+
+  .filtro { width: 100%; }
+  .filtro input,
+  .filtro select { flex: 1; min-width: 0; }
+
+  .venda-topo { flex-wrap: wrap; }
+
+  /* tabelas viram cartões: cada linha vira um bloco com rótulos */
+  table, tbody, tr, td { display: block; }
+  table { background: transparent; overflow: visible; }
+  thead { display: none; }
+  tr {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    margin-bottom: .6rem;
+    padding: .35rem 0;
+  }
+  td { border: 0; padding: .25rem .85rem; }
+  td.acoes { padding-top: .5rem; }
+  .acoes button { min-height: 40px; }
+
+  td::before {
+    display: inline-block;
+    min-width: 6.5rem;
+    margin-right: .5rem;
+    color: #6b7280;
+    font-size: .8rem;
+    font-weight: 600;
+  }
+
+  /* rótulos de cada coluna (o cabeçalho da tabela some no celular) */
+  #produtos-lista td:nth-child(1):not([colspan])::before { content: "Produto"; }
+  #produtos-lista td:nth-child(2):not([colspan])::before { content: "Marca"; }
+  #produtos-lista td:nth-child(3):not([colspan])::before { content: "Preço"; }
+  #produtos-lista td:nth-child(4):not([colspan])::before { content: "Estoque"; }
+  #produtos-lista td:nth-child(5):not([colspan])::before { content: "Mínimo"; }
+
+  #reservas-lista td:nth-child(1):not([colspan])::before { content: "Cliente"; }
+  #reservas-lista td:nth-child(2):not([colspan])::before { content: "Produto"; }
+  #reservas-lista td:nth-child(3):not([colspan])::before { content: "Qtd"; }
+  #reservas-lista td:nth-child(4):not([colspan])::before { content: "Data"; }
+  #reservas-lista td:nth-child(5):not([colspan])::before { content: "Situação"; }
+
+  #clientes-lista td:nth-child(1):not([colspan])::before { content: "Cliente"; }
+  #clientes-lista td:nth-child(2):not([colspan])::before { content: "Telefone"; }
+  #clientes-lista td:nth-child(3):not([colspan])::before { content: "Deve"; }
+
+  #venda-itens td:nth-child(1):not([colspan])::before { content: "Produto"; }
+  #venda-itens td:nth-child(2):not([colspan])::before { content: "Qtd"; }
+  #venda-itens td:nth-child(3):not([colspan])::before { content: "Preço"; }
+  #venda-itens td:nth-child(4):not([colspan])::before { content: "Subtotal"; }
+
+  .venda-card td:nth-child(1)::before { content: "Parcela"; }
+  .venda-card td:nth-child(2)::before { content: "Vencimento"; }
+  .venda-card td:nth-child(3)::before { content: "Valor"; }
+  .venda-card td:nth-child(4)::before { content: "Situação"; }
+}
